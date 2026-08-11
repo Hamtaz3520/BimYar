@@ -92,3 +92,7 @@ The field is too small to accept the amount of data you attempted to add.
 ## محدودیت این مرحله
 
 در این مرحله نباید هیچ SQL یا VBA جدیدی از روی حدس تولید شود. فقط ساختار پوشه‌ها و مستندات وضعیت پروژه ایجاد و نگهداری می‌شوند.
+
+## آمادگی Source Intake
+
+- مرحله Source Intake برای دریافت و ثبت اولین بسته واقعی فایل‌های پروژه آماده شده است.
