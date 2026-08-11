@@ -1,5 +1,11 @@
 # وضعیت فعلی پروژه BimYar
 
+## فاز فعلی
+
+- **Current Phase:** 3
+- **Current Phase Title:** Repository Stabilization and Source Intake
+- **Next Phase:** 4 - Import Engine Stabilization
+
 ## معرفی پروژه
 
 - **نام پروژه:** BimYar
