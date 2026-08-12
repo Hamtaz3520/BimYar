@@ -1,0 +1,36 @@
+﻿/*=========================================================
+  Project : BimYar
+  File    : 004_Create_tblInsuranceCompanies.sql
+  Table   : tblInsuranceCompanies
+  Version : 4.0
+=========================================================*/
+
+CREATE TABLE tblInsuranceCompanies
+(
+    CompanyID AUTOINCREMENT
+        CONSTRAINT PK_tblInsuranceCompanies PRIMARY KEY,
+
+    CompanyCode TEXT(10),
+
+    CompanyName TEXT(100) NOT NULL,
+
+    ManagerName TEXT(100),
+
+    Phone TEXT(30),
+
+    Fax TEXT(30),
+
+    Email TEXT(100),
+
+    Website TEXT(100),
+
+    Address LONGTEXT,
+
+    IsActive YESNO,
+
+    Description LONGTEXT,
+
+    CreatedDate DATETIME,
+
+    ModifiedDate DATETIME
+);
