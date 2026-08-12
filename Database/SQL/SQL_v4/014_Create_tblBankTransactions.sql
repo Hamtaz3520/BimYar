@@ -1,0 +1,48 @@
+﻿/*=========================================================
+  Project : BimYar
+  File    : 014_Create_tblBankTransactions.sql
+  Table   : tblBankTransactions
+  Version : 5.0
+=========================================================*/
+
+CREATE TABLE tblBankTransactions
+(
+    TransactionID AUTOINCREMENT
+        CONSTRAINT PK_tblBankTransactions PRIMARY KEY,
+
+    BankAccountID LONG,
+
+    TransactionDate DATETIME,
+
+    TransactionTime DATETIME,
+
+    DebitAmount CURRENCY,
+
+    CreditAmount CURRENCY,
+
+    Balance CURRENCY,
+
+    TransactionType TEXT(30),
+
+    TransactionSource TEXT(30),
+
+    ReferenceNo TEXT(100),
+
+    TrackingCode TEXT(100),
+
+    PayerName TEXT(100),
+
+    PayerCardNo TEXT(25),
+
+    PayerAccountNo TEXT(40),
+
+    Description LONGTEXT,
+
+    IsMatched YESNO,
+
+    ImportBatchID LONG,
+
+    CreatedDate DATETIME,
+
+    ModifiedDate DATETIME
+);
