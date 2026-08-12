@@ -14,13 +14,13 @@
 
 ## ساختار نسخه‌های SQL
 
-- پوشه `Database/SQL/SQL_v4` برای مجموعه کاری قبلی و مرجع SQL_v4 در نظر گرفته شده است؛ در موجودی فعلی Repository هیچ فایل منبع واقعی در آن وجود ندارد و تنها `.gitkeep` موجود است.
+- پوشه `Database/SQL/SQL_v4` شامل مجموعه واقعی فعلی است: ۱۸ فایل SQL غیر-placeholder که ۱۷ جدول و ۵ ایندکس `tblInstallments` را تعریف می‌کنند؛ `.gitkeep` در شمارش منبع واقعی لحاظ نمی‌شود.
 - پوشه `Database/SQL/SQL_v5` فقط برای فایل‌های SQL جدید یا فایل‌هایی است که نسبت به نسخه قبلی تغییر کرده‌اند.
 - فایل‌های بدون تغییر نباید بی‌دلیل در `SQL_v5` تکرار شوند.
 
 ## جدول‌های پایگاه داده
 
-### جدول‌های تأییدشده ساخته‌شده
+### جدول‌های دارای DDL تأییدشده در Repository
 
 - `tblRoles`
 - `tblUsers`
@@ -41,6 +41,9 @@
 - `tblRenewalStatuses`
 - `tblImportPolicies`
 - `tblImportPolicies_Work`
+
+### جدول‌های گزارش‌شده ساخته‌شده، اما بدون DDL موجود
+
 - `tblImportSessions`
 - `tblImportErrors`
 - `tblImportLogs`
@@ -106,6 +109,8 @@ The field is too small to accept the amount of data you attempted to add.
 - **Phase 3 Step 3.2:** Completed
 - اولین بسته واقعی Source Intake با شناسه `BMY-CX-20260812-006-R3` از نظر وجود، مسیر، نام، پسوند، خوانایی و encoding تأیید شد.
 - **Phase 3 Step 3.3:** Completed — تحلیل رسمی شکاف پیاده‌سازی در `Documents/Progress/BIMYAR_GAP_ANALYSIS.md` ثبت شد.
-- **Phase 3 Step 3.4:** Completed — موجودی کامل وضعیت فعلی `Database/SQL/SQL_v4/` در `Documents/Progress/SQL_V4_INVENTORY.md` ثبت شد: صفر فایل منبع واقعی SQL_v4 موجود است و `.gitkeep` تنها فایل پوشه است.
-- تکمیل Step 3.4 فقط به معنی بازرسی کامل موجودی فعلی Repository است؛ مجموعه تاریخی SQL_v4، نام‌ها، تعداد فایل‌ها و ترتیب اجرای آن هنوز دریافت یا تأیید نشده‌اند.
-- وضعیت کلی Phase 3 همچنان **In Progress** است؛ سایر اقلام باقی‌مانده چک‌لیست Source Intake و بستن رسمی Phase 3 هنوز تکمیل نشده‌اند.
+- **Phase 3 Step 3.4:** Completed — موجودی snapshot پیشین در زمان خالی‌بودن پوشه ثبت شد؛ موجودی Step 3.5 اکنون آن شمارش قبلی را به‌روزرسانی می‌کند.
+- **Phase 3 Step 3.5:** Completed — هر ۱۸ فایل واقعی SQL_v4 فعلی (۱۷ فایل ساخت جدول و یک فایل مستقل شامل ۵ ایندکس) به‌طور کامل در `Documents/Progress/SQL_V4_SCHEMA_ANALYSIS.md` تحلیل و موجودی `Documents/Progress/SQL_V4_INVENTORY.md` به‌روزرسانی شد.
+- یافته کلیدی: ۱۷ کلید اصلی و تنها ۵ ایندکس ثانویه وجود دارد؛ هیچ `FOREIGN KEY` و هیچ `DEFAULT` تعریف نشده است. رابطه‌های منطقی، ایندکس‌های FK/جستجو/تطبیق، ناسازگاری اندازه و نوع فیلدها و ابهام شماره‌گذاری 012 مستند شده‌اند.
+- فایل‌های 018 تا 023 در Repository موجود نیستند و مستندات فعلی نام دقیق یا خالی‌بودن تاریخی آن‌ها را اثبات نمی‌کند؛ در این مرحله هیچ SQL برای آن‌ها ساخته نشد.
+- وضعیت کلی Phase 3 همچنان **In Progress** است؛ تطبیق با Access واقعی، ترتیب اجرا، رابطه‌ها/ایندکس‌های واقعی، تکمیل SQL_v5، سایر VBAها، نمونه‌های Excel و اسناد معماری/قواعد کسب‌وکار و بستن رسمی Phase 3 باقی مانده‌اند.
