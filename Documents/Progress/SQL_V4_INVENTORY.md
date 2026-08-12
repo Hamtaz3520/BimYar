@@ -1,69 +1,64 @@
 # SQL_v4 Source Inventory
 
-**Work item:** `BMY-CX-20260812-008`
-
-**Phase / step:** Phase 3 / Step 3.4
-
+**Work item:** `BMY-CX-20260812-009`
+**Phase / step:** Phase 3 / Step 3.5
 **Inspection date:** 2026-08-12
-
 **Inspected location:** `Database/SQL/SQL_v4/`
 
-## 1. Scope and evidence rule
+## 1. Evidence rule
 
-This inventory records only files physically present in the repository. Documentation references are comparison evidence, not proof that a source file exists. No SQL file was generated, reconstructed, inferred, renamed, rewritten, or repaired during this inspection.
+This inventory records the repository files actually present at inspection time. No SQL was reconstructed, invented, renamed, rewritten, or repaired. `.gitkeep` is a directory marker and is excluded from all real-source counts. Detailed field, key, relationship, index, compatibility, and inconsistency findings are in `SQL_V4_SCHEMA_ANALYSIS.md`.
 
-The target directory and the repository-wide file list were inspected. File type, exact path, extension, byte size, emptiness, read access, and decoding were checked for every file in the target directory. Repository-wide filename and path checks were also used to look for misplaced SQL files and duplicate filenames.
+## 2. Current authoritative inventory
 
-## 2. VERIFIED REAL SQL_v4 FILES
+**18 real SQL_v4 source files were inspected. They contain 17 `CREATE TABLE` definitions and one additional index-only script.** All 18 are non-empty, readable UTF-8 with BOM, and use a `.sql` extension.
 
-**Total verified real SQL_v4 source files: 0.**
+| Seq. | Exact filename | Object/purpose | Kind |
+| ---: | --- | --- | --- |
+| 001 | `001_Create_tblRoles.sql` | `tblRoles` | Table |
+| 002 | `002_Create_tblUsers.sql` | `tblUsers` | Table |
+| 003 | `003_Create_tblMarketers.sql` | `tblMarketers` | Table |
+| 004 | `004_Create_tblInsuranceCompanies.sql` | `tblInsuranceCompanies` | Table |
+| 005 | `005_Create_tblBranches.sql` | `tblBranches` | Table |
+| 006 | `006_Create_tblInsuranceTypes.sql` | `tblInsuranceTypes` | Table |
+| 007 | `007_Create_tblBanks.sql` | `tblBanks` | Table |
+| 008 | `008_Create_tblAccountHeads.sql` | `tblAccountHeads` | Table |
+| 009 | `009_Create_tblSettings.sql` | `tblSettings` | Table |
+| 010 | `010_Create_tblCustomers.sql` | `tblCustomers` | Table |
+| 011 | `011_Create_tblPolicies.sql` | `tblPolicies` | Table |
+| 012 | `012_Create_tblInstallments.sql` | `tblInstallments` | Table |
+| 012 | `012_Create_tblInstallments -Indexes.sql` | Five `tblInstallments` indexes | Index-only |
+| 013 | `013_Create_tblPayments.sql` | `tblPayments` | Table |
+| 014 | `014_Create_tblBankTransactions.sql` | `tblBankTransactions` | Table |
+| 015 | `015_Create_tblFollowUps.sql` | `tblFollowUps` | Table |
+| 016 | `016_Create_tblRenewals.sql` | `tblRenewals` | Table |
+| 017 | `017_Create_tblImportPolicies.sql` | `tblImportPolicies` | Table |
 
-There are no SQL_v4 source files to list. In particular, no file with a `.sql` extension is present in `Database/SQL/SQL_v4/`. Consequently, there is no SQL_v4 source content whose purpose, encoding, or corruption can be assessed.
+Directory marker: `.gitkeep` is present but is not SQL and is not included in the 18-file count.
 
-### Directory marker (not a real source file)
+## 3. Structure and numbering findings
 
-| Exact filename | Exact repository path | Extension | Byte size | Empty / non-empty | Readable / unreadable | Encoding / readability result | Obvious corruption | Purpose |
-| --- | --- | --- | ---: | --- | --- | --- | --- | --- |
-| `.gitkeep` | `Database/SQL/SQL_v4/.gitkeep` | No conventional extension (`Path.suffix` is empty) | 1 | Non-empty (one LF byte) | Readable | Valid UTF-8/ASCII newline; also decodes as UTF-8 with BOM handling; not a SQL source | None; it is a directory marker | Keeps the otherwise source-empty directory tracked by Git |
+- Sequence 001–017 is represented, but 012 is duplicated. The table must precede its index-only companion; filename sorting/run order alone is not a sufficient migration contract.
+- The companion filename includes a space in `Installments -Indexes` and is the only secondary-index script. No table DDL contains an inline secondary index.
+- The index file creates four non-unique indexes and one unique composite index. All 17 table files create a primary key.
+- No 018–023 files exist in the current directory or repository history inspected for this task. Current documentation does not identify exact historical filenames or prove they were empty; therefore those numbers are not counted as received sources and no SQL is inferred for them.
+- `.gitkeep` remains harmless but no longer represents an empty directory.
 
-`.gitkeep` is explicitly excluded from the real-source count.
+## 4. Table reconciliation
 
-## 3. REFERENCED BUT NOT PRESENT
+The 17 SQL_v4 tables match 17 names in the “confirmed created” list in `PROJECT_STATUS.md`. SQL_v5 separately provides `tblRenewalStatuses` and `tblImportPolicies_Work`. Three status-listed created tables remain referenced without DDL: `tblImportSessions`, `tblImportErrors`, and `tblImportLogs`. Five tables remain explicitly planned without DDL: `tblImportPayments`, `tblImportBank`, `tblUserLogs`, `tblPermissions`, and `tblRolePermissions`.
 
-| Reference | Repository finding |
-| --- | --- |
-| `PROJECT_STATUS.md` describes `Database/SQL/SQL_v4` as the previous working collection and reference for existing scripts. | No real SQL_v4 script is present. The statement does not identify any exact filename and is not existence evidence. |
-| `Documents/Progress/BIMYAR_GAP_ANALYSIS.md` refers to the complete/full SQL_v4 set and run order as intake still required. | The referenced set and run-order guide are not present. The gap analysis itself also records that the directory contains only `.gitkeep`. |
-| `Documents/Progress/SOURCE_INTAKE_CHECKLIST.md` requests all current real SQL_v4 files and any available run-order guide. | The checklist does not name individual SQL_v4 files. No such file or guide is present. |
-| `Documents/Progress/SOURCE_INTAKE_LOG.md` records earlier intake packages. | It records no received SQL_v4 source filename. |
-| `PROJECT_STRUCTURE.md` defines `Database/SQL/` as the location for SQL scripts and explains `.gitkeep` as an empty-directory marker. | It provides structure only and does not name or prove the existence of a SQL_v4 source file. |
+The prior Step 3.4 inventory correctly recorded the earlier empty snapshot. This document now supersedes its zero-source count following upload of the real files.
 
-Because none of the reviewed documents gives an exact SQL_v4 filename, there is no defensible filename-level missing list. The authoritative finding is an **unnamed, uncounted SQL_v4 source set referenced for future intake but not present**.
+## 5. Verification still required
 
-The two real `.sql` files found elsewhere in the repository—`Database/SQL/SQL_v5/024_Create_tblRenewalStatuses.sql` and `Database/SQL/SQL_v5/026_Create_tblImportPolicies_Work.sql`—are SQL_v5 sources. They are not treated as SQL_v4 files or as proof of missing SQL_v4 counterparts.
-
-## 4. NEEDS VERIFICATION
-
-The following cannot be verified until the untouched authoritative source set or other direct evidence is received:
-
-- the intended SQL_v4 filenames and total file count;
-- whether any historical SQL_v4 source actually exists outside this repository;
-- original byte sizes, encodings, readability, and content integrity;
-- script purposes, dependencies, and execution order;
-- whether a run-order guide exists;
-- whether the complete historical set has been received.
-
-These unknowns do not prevent completion of this repository-inventory step; they remain Phase 3 source-intake items.
-
-## 5. NUMBERING / STRUCTURE ISSUES
-
-- **Numbering gaps:** No SQL_v4 numbered source file exists, so a sequence cannot be established and specific missing numbers cannot be inferred. The entire numbering baseline remains unknown. The SQL_v5 numbers `024` and `026` must not be projected backward onto SQL_v4.
-- **Duplicate filenames:** None among real SQL_v4 files, because the real-file set is empty. The repository-wide check found no duplicated SQL source filename.
-- **Wrong extensions:** None in the SQL_v4 directory. `.gitkeep` has no conventional extension and is a directory marker, not a wrongly extended source.
-- **Wrong-directory files:** No file elsewhere in the repository claims an SQL_v4 path or identity. The two repository SQL sources are correctly identifiable by their actual `SQL_v5` paths and were not reclassified.
-- **Empty placeholders:** No zero-byte file exists in `Database/SQL/SQL_v4/`. The one-byte `.gitkeep` marker is placeholder infrastructure, not source.
-- **Structural discrepancy:** `PROJECT_STATUS.md` describes SQL_v4 as a previous working/reference collection, while the repository contains no real files in that collection. This inventory preserves that distinction without attempting to resolve it by inference.
+- compare all DDL with the sanitized/live Access database, including field properties not expressible here;
+- verify each script and the multi-statement index file executes under Access 2016;
+- obtain an authoritative run order and identify any missing ALTER/relationship/index scripts;
+- reconcile actual relationships, referential integrity, defaults, required properties, validation rules, and indexes;
+- verify whether any authoritative historical 018–023 artifacts exist outside the repository rather than inventing them;
+- complete SQL_v5 and remaining source intake.
 
 ## 6. Completion decision
 
-**Phase 3 Step 3.4: Completed.** The current repository SQL_v4 inventory was fully inspected and documented: zero real SQL_v4 sources are present, and `.gitkeep` is the only directory entry. Completion applies only to inventorying the present repository state; it does not mean the missing historical set was received, it does not close SQL_v4 intake, and it does not complete Phase 3.
+**Phase 3 Step 3.5: Completed.** The current real SQL_v4 set—18 source files representing 17 tables—has been inventoried and analyzed. Phase 3 remains **In Progress**; this result does not certify the live database or complete remaining source intake.
