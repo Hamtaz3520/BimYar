@@ -14,7 +14,7 @@
 
 ## ساختار نسخه‌های SQL
 
-- پوشه `Database/SQL/SQL_v4` مجموعه کاری قبلی و مرجع اسکریپت‌های موجود است.
+- پوشه `Database/SQL/SQL_v4` برای مجموعه کاری قبلی و مرجع SQL_v4 در نظر گرفته شده است؛ در موجودی فعلی Repository هیچ فایل منبع واقعی در آن وجود ندارد و تنها `.gitkeep` موجود است.
 - پوشه `Database/SQL/SQL_v5` فقط برای فایل‌های SQL جدید یا فایل‌هایی است که نسبت به نسخه قبلی تغییر کرده‌اند.
 - فایل‌های بدون تغییر نباید بی‌دلیل در `SQL_v5` تکرار شوند.
 
@@ -106,4 +106,6 @@ The field is too small to accept the amount of data you attempted to add.
 - **Phase 3 Step 3.2:** Completed
 - اولین بسته واقعی Source Intake با شناسه `BMY-CX-20260812-006-R3` از نظر وجود، مسیر، نام، پسوند، خوانایی و encoding تأیید شد.
 - **Phase 3 Step 3.3:** Completed — تحلیل رسمی شکاف پیاده‌سازی در `Documents/Progress/BIMYAR_GAP_ANALYSIS.md` ثبت شد.
+- **Phase 3 Step 3.4:** Completed — موجودی کامل وضعیت فعلی `Database/SQL/SQL_v4/` در `Documents/Progress/SQL_V4_INVENTORY.md` ثبت شد: صفر فایل منبع واقعی SQL_v4 موجود است و `.gitkeep` تنها فایل پوشه است.
+- تکمیل Step 3.4 فقط به معنی بازرسی کامل موجودی فعلی Repository است؛ مجموعه تاریخی SQL_v4، نام‌ها، تعداد فایل‌ها و ترتیب اجرای آن هنوز دریافت یا تأیید نشده‌اند.
 - وضعیت کلی Phase 3 همچنان **In Progress** است؛ سایر اقلام باقی‌مانده چک‌لیست Source Intake و بستن رسمی Phase 3 هنوز تکمیل نشده‌اند.
