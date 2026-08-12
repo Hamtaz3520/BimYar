@@ -1,0 +1,34 @@
+﻿/*=========================================================
+  Project : BimYar
+  File    : 007_Create_tblBanks.sql
+  Table   : tblBanks
+  Version : 4.0
+=========================================================*/
+
+CREATE TABLE tblBanks
+(
+    BankID AUTOINCREMENT
+        CONSTRAINT PK_tblBanks PRIMARY KEY,
+
+    BankCode TEXT(10),
+
+    BankName TEXT(100) NOT NULL,
+
+    BranchName TEXT(100),
+
+    AccountNumber TEXT(50),
+
+    CardNumber TEXT(20),
+
+    IBAN TEXT(30),
+
+    AccountHolder TEXT(100),
+
+    IsActive YESNO,
+
+    Description LONGTEXT,
+
+    CreatedDate DATETIME,
+
+    ModifiedDate DATETIME
+);
