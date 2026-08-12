@@ -89,16 +89,20 @@ The field is too small to accept the amount of data you attempted to add.
 - Mapping بر اساس شماره ستون با `GetImportFieldNameByColumn` انجام شده است.
 - تست‌های اندازه فیلد Excel و جداول Access ایجاد شده‌اند.
 
-## فایل‌های شناخته‌شده فعلی SQL_v5
+## فایل‌های واقعی تأییدشده در Source Intake
 
-- `024_Create_tblRenewalStatuses.sql`
-- `025_Insert_modSeedData.bas`
-- `026_Create_tblImportPolicies_Work.sql`
+- `Database/SQL/SQL_v5/024_Create_tblRenewalStatuses.sql`
+- `Database/VBA/Modules/025_Insert_modSeedData.bas`
+- `Database/SQL/SQL_v5/026_Create_tblImportPolicies_Work.sql`
+
+مسیر تکراری و نادرست `Database/VBA/025_Insert_modSeedData.bas` وجود ندارد.
 
 ## محدودیت این مرحله
 
 در این مرحله نباید هیچ SQL یا VBA جدیدی از روی حدس تولید شود. فقط ساختار پوشه‌ها و مستندات وضعیت پروژه ایجاد و نگهداری می‌شوند.
 
-## آمادگی Source Intake
+## وضعیت Source Intake
 
-- مرحله Source Intake برای دریافت و ثبت اولین بسته واقعی فایل‌های پروژه آماده شده است.
+- **Phase 3 Step 3.2:** Completed
+- اولین بسته واقعی Source Intake با شناسه `BMY-CX-20260812-006-R3` از نظر وجود، مسیر، نام، پسوند، خوانایی و encoding تأیید شد.
+- وضعیت کلی Phase 3 همچنان **In Progress** است؛ سایر اقلام باقی‌مانده چک‌لیست Source Intake و بستن رسمی Phase 3 هنوز تکمیل نشده‌اند.
