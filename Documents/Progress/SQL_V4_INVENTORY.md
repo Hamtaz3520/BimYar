@@ -1,8 +1,8 @@
 # SQL_v4 Source Inventory
 
-**Work item:** `BMY-CX-20260812-009`
+**Work item:** `BMY-CX-20260813-009`
 **Phase / step:** Phase 3 / Step 3.5
-**Inspection date:** 2026-08-12
+**Inspection date:** 2026-08-13
 **Inspected location:** `Database/SQL/SQL_v4/`
 
 ## 1. Evidence rule
@@ -41,7 +41,7 @@ Directory marker: `.gitkeep` is present but is not SQL and is not included in th
 - Sequence 001–017 is represented, but 012 is duplicated. The table must precede its index-only companion; filename sorting/run order alone is not a sufficient migration contract.
 - The companion filename includes a space in `Installments -Indexes` and is the only secondary-index script. No table DDL contains an inline secondary index.
 - The index file creates four non-unique indexes and one unique composite index. All 17 table files create a primary key.
-- No 018–023 files exist in the current directory or repository history inspected for this task. Current documentation does not identify exact historical filenames or prove they were empty; therefore those numbers are not counted as received sources and no SQL is inferred for them.
+- No 018–023 files exist in the current directory or inspected repository history. Per the task owner's historical evidence, the former local files at those sequence positions were empty; they are treated only as known missing/unimplemented items, are not counted as real sources, and no filename, object, or SQL content is inferred for them.
 - `.gitkeep` remains harmless but no longer represents an empty directory.
 
 ## 4. Table reconciliation
@@ -56,7 +56,7 @@ The prior Step 3.4 inventory correctly recorded the earlier empty snapshot. This
 - verify each script and the multi-statement index file executes under Access 2016;
 - obtain an authoritative run order and identify any missing ALTER/relationship/index scripts;
 - reconcile actual relationships, referential integrity, defaults, required properties, validation rules, and indexes;
-- verify whether any authoritative historical 018–023 artifacts exist outside the repository rather than inventing them;
+- retain 018–023 as known missing/unimplemented historical positions unless authoritative non-empty artifacts are supplied; do not reconstruct them;
 - complete SQL_v5 and remaining source intake.
 
 ## 6. Completion decision
