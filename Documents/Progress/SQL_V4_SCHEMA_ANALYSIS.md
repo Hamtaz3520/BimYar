@@ -1,8 +1,8 @@
 # SQL_v4 Schema Analysis
 
-**Work item:** `BMY-CX-20260812-009`
+**Work item:** `BMY-CX-20260813-009`
 **Phase / step:** Phase 3 / Step 3.5
-**Analysis date:** 2026-08-12
+**Analysis date:** 2026-08-13
 **Authoritative scope:** `Database/SQL/SQL_v4/`
 
 ## 1. Scope, method, and headline result
@@ -224,11 +224,17 @@ All 17 SQL_v4 tables are only **schema-source implemented** pending Access execu
 
 ### Referenced but missing from available DDL
 
-`PROJECT_STATUS.md` reports `tblImportSessions`, `tblImportErrors`, and `tblImportLogs` as created, but no SQL_v4/v5 DDL for them is present. It lists `tblImportPayments`, `tblImportBank`, `tblUserLogs`, `tblPermissions`, and `tblRolePermissions` as planned; they are not implemented. No current repository documentation identifies exact filenames for historical 018–023, and no such files are present, so this analysis records the six sequence positions only as **undocumented/missing implementation candidates**, not as known empty historical files and not as authority to create them.
+`PROJECT_STATUS.md` reports `tblImportSessions`, `tblImportErrors`, and `tblImportLogs` as created, but no SQL_v4/v5 DDL for them is present. It lists `tblImportPayments`, `tblImportBank`, `tblUserLogs`, `tblPermissions`, and `tblRolePermissions` as planned; they are not implemented. No current repository source identifies exact filenames or intended objects for historical positions 018–023, and no such files are present. The task owner's report that the former local files were empty establishes only that these positions are known missing/unimplemented items; it is not authority to infer or create SQL for them.
 
-### Corrections to earlier documents
+### Comparison with the three baseline documents
 
-The earlier inventory and gap analysis were accurate for their prior repository snapshot but are now stale where they say SQL_v4 contains only `.gitkeep`. The updated inventory supersedes that count. The gap analysis should be read with this analysis for the current 17-table evidence; its remaining concerns about runtime verification, relationship exports, SQL_v5 completeness, modules, samples, and business rules remain valid.
+| Baseline document | Comparison with the real SQL_v4 set |
+| --- | --- |
+| `PROJECT_STATUS.md` | Its 17 SQL_v4 table names are confirmed by DDL. The SQL_v5-only `tblRenewalStatuses` and `tblImportPolicies_Work` remain separate. The reported `tblImportSessions`, `tblImportErrors`, and `tblImportLogs` still have no available DDL. |
+| `Documents/Progress/BIMYAR_GAP_ANALYSIS.md` | Its earlier statement that SQL_v4 contained only `.gitkeep` was accurate for that snapshot but is now superseded: 17 table definitions and five secondary indexes are inspectable. Its warnings about absent live-Access verification, declared relationships, broad index coverage, import-session DDL, VBA, samples, and business rules remain applicable. |
+| `Documents/Progress/SQL_V4_INVENTORY.md` | The Step 3.4 zero-source snapshot is superseded by the current 18-file inventory. The inventory count, filenames, object count, duplicate 012 numbering, and missing 018–023 positions agree with this detailed analysis. |
+
+The historical local files numbered 018 through 023 are reported by the task owner as having been empty. They are therefore treated as known missing/unimplemented items, not as SQL implementation evidence. They are absent from the current repository, their exact filenames and intended objects cannot be derived from the available sources, and no replacements are created or inferred in this step.
 
 ## 7. Highest-priority database fixes for a later implementation step
 
