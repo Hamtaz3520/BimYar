@@ -1,22 +1,22 @@
 # Batch 1 Machine-readable Execution Checklist
 
 This YAML document is the authoritative checklist instance for work item
-`BMY-CX-20260813-012`. Enumerations are fixed so automation can reject blank or
+`BMY-CX-20260813-013`. Enumerations are fixed so automation can reject blank or
 ambiguous results. Evidence paths are relative to the approved external evidence
 directory and must never contain production values or secrets.
 
 ```yaml
 schema_version: "1.0"
-work_item: "BMY-CX-20260813-012"
+work_item: "BMY-CX-20260813-013"
 project: "BimYar"
 phase: 3
-step: "3.8"
+step: "3.9"
 batch: 1
-title: "Protection and read-only preflight"
+title: "Real Access baseline read-only preflight"
 target_runtime: "Microsoft Access 2016"
 execution_date_utc: "2026-08-13"
-source_commit: "263c0a1f9e2ac05e28fdba238820ffc52ec6fe1f"
-allowed_statuses: [PASS, FAIL, BLOCKED, NOT_APPLICABLE]
+source_commit: "b58767bd5c92c38f5daa4b3881e05ddb9ce2317a"
+allowed_statuses: [VERIFIED, BLOCKED, NOT_PRESENT, NEEDS_ACCESS_2016_VERIFICATION]
 overall_status: BLOCKED
 gate_passed: false
 safety:
@@ -32,7 +32,7 @@ execution_context:
   operator: null
   reviewer: null
   approval_reference: null
-  sanitized_source_path: null
+  sanitized_source_path: "Database/Access/Baseline/BimYarCRM_v0.1.accdb"
   external_backup_path: null
   external_evidence_path: null
   access_version: null
@@ -40,7 +40,7 @@ execution_context:
   access_bitness: null
   ace_version: null
   dao_version: null
-  source_sha256: null
+  source_sha256: "6e7f8f288b2f1e76c4717d3912104887a3f10afc2561d2fc775c87ec034f9088"
   backup_sha256: null
   restore_preopen_sha256: null
   restore_postclose_sha256: null
@@ -52,16 +52,16 @@ items:
     evidence: null
     note: "Approval was not supplied."
   - id: ENTRY-02
-    requirement: "Owner-approved sanitized Access database supplied"
+    requirement: "Design-only Access baseline database supplied as repository evidence"
     required: true
-    status: BLOCKED
-    evidence: null
-    note: "No .accdb or .mdb was present in the workspace."
+    status: VERIFIED
+    evidence: "ACCESS_BASELINE_AUDIT.md#2-artifact-verification"
+    note: "Exact artifact is present, non-zero, readable, and has no sibling .laccdb lock file."
   - id: A-01
     requirement: "Closed source metadata and SHA-256 captured"
     required: true
-    status: BLOCKED
-    evidence: null
+    status: VERIFIED
+    evidence: "ACCESS_BASELINE_AUDIT.md#2-artifact-verification"
   - id: A-02
     requirement: "Byte-for-byte external backup created"
     required: true
@@ -80,8 +80,8 @@ items:
   - id: B-02
     requirement: "Restored copy opens read-only in Access 2016 without repair or conversion"
     required: true
-    status: BLOCKED
-    evidence: null
+    status: NEEDS_ACCESS_2016_VERIFICATION
+    evidence: "ACCESS_BASELINE_AUDIT.md#3-inspection-capability-and-actual-object-inventory"
   - id: B-03
     requirement: "Restore hashes match before open and after close-without-save"
     required: true
@@ -90,78 +90,78 @@ items:
   - id: C-01
     requirement: "Complete table/field/property schema baseline exported"
     required: true
-    status: BLOCKED
-    evidence: null
+    status: NEEDS_ACCESS_2016_VERIFICATION
+    evidence: "ACCESS_BASELINE_AUDIT.md#3-inspection-capability-and-actual-object-inventory"
   - id: C-02
     requirement: "Nineteen represented tables and three reported session objects reconciled"
     required: true
-    status: BLOCKED
-    evidence: null
+    status: NEEDS_ACCESS_2016_VERIFICATION
+    evidence: "ACCESS_BASELINE_AUDIT.md#3-inspection-capability-and-actual-object-inventory"
   - id: D-01
     requirement: "Relationship fields, RI, and cascade flags exported"
     required: true
-    status: BLOCKED
-    evidence: null
+    status: NEEDS_ACCESS_2016_VERIFICATION
+    evidence: "ACCESS_BASELINE_AUDIT.md#3-inspection-capability-and-actual-object-inventory"
   - id: E-01
     requirement: "Ordered index fields and index properties exported"
     required: true
-    status: BLOCKED
-    evidence: null
+    status: NEEDS_ACCESS_2016_VERIFICATION
+    evidence: "ACCESS_BASELINE_AUDIT.md#3-inspection-capability-and-actual-object-inventory"
   - id: F-01
     requirement: "Exact pre-profile local and readable linked-table counts captured"
     required: true
-    status: BLOCKED
-    evidence: null
+    status: NEEDS_ACCESS_2016_VERIFICATION
+    evidence: "ACCESS_BASELINE_AUDIT.md#3-inspection-capability-and-actual-object-inventory"
   - id: F-02
     requirement: "Exact post-profile counts equal pre-profile counts"
     required: true
-    status: BLOCKED
-    evidence: null
+    status: NEEDS_ACCESS_2016_VERIFICATION
+    evidence: "ACCESS_BASELINE_AUDIT.md#3-inspection-capability-and-actual-object-inventory"
   - id: G-01
     requirement: "3163-related declared-capacity and stored-length profiles captured"
     required: true
-    status: BLOCKED
-    evidence: null
+    status: NEEDS_ACCESS_2016_VERIFICATION
+    evidence: "ACCESS_BASELINE_AUDIT.md#3-inspection-capability-and-actual-object-inventory"
   - id: G-02
     requirement: "Genuine mapping-specific length profile captured without new normalization"
     required: true
-    status: BLOCKED
-    evidence: null
+    status: NEEDS_ACCESS_2016_VERIFICATION
+    evidence: "ACCESS_BASELINE_AUDIT.md#3-inspection-capability-and-actual-object-inventory"
   - id: H-01
     requirement: "Declared-key and candidate-only duplicate profiles captured"
     required: true
-    status: BLOCKED
-    evidence: null
+    status: NEEDS_ACCESS_2016_VERIFICATION
+    evidence: "ACCESS_BASELINE_AUDIT.md#3-inspection-capability-and-actual-object-inventory"
   - id: I-01
     requirement: "Live and logical-link orphan profiles captured without invented parents"
     required: true
-    status: BLOCKED
-    evidence: null
+    status: NEEDS_ACCESS_2016_VERIFICATION
+    evidence: "ACCESS_BASELINE_AUDIT.md#3-inspection-capability-and-actual-object-inventory"
   - id: J-01
     requirement: "Import session/error/log existence, definitions, counts, and coverage recorded"
     required: true
-    status: BLOCKED
-    evidence: null
+    status: NEEDS_ACCESS_2016_VERIFICATION
+    evidence: "ACCESS_BASELINE_AUDIT.md#3-inspection-capability-and-actual-object-inventory"
   - id: K-01
     requirement: "Payment linkage/status/count/Currency aggregate baseline captured"
     required: true
-    status: BLOCKED
-    evidence: null
+    status: NEEDS_ACCESS_2016_VERIFICATION
+    evidence: "ACCESS_BASELINE_AUDIT.md#3-inspection-capability-and-actual-object-inventory"
   - id: K-02
     requirement: "Bank matching/count/Currency aggregate and unresolved identifier baseline captured"
     required: true
-    status: BLOCKED
-    evidence: null
+    status: NEEDS_ACCESS_2016_VERIFICATION
+    evidence: "ACCESS_BASELINE_AUDIT.md#3-inspection-capability-and-actual-object-inventory"
   - id: L-01
     requirement: "Access 2016 version, build, bitness, ACE/DAO, OS, format, and locale recorded"
     required: true
-    status: BLOCKED
-    evidence: null
+    status: NEEDS_ACCESS_2016_VERIFICATION
+    evidence: "ACCESS_BASELINE_AUDIT.md#3-inspection-capability-and-actual-object-inventory"
   - id: SAFE-01
-    requirement: "No database artifact opened and no DDL, DML, object save, or logic change performed"
+    requirement: "No database artifact opened through Access and no DDL, DML, object save, or logic change performed"
     required: true
-    status: PASS
-    evidence: "BATCH1_PROTECTION_BASELINE.md#7-executed-preflight-record"
+    status: VERIFIED
+    evidence: "ACCESS_BASELINE_AUDIT.md#1-decision"
   - id: SIGN-01
     requirement: "External evidence manifest complete and SHA-256 verified"
     required: true
@@ -178,20 +178,17 @@ items:
     status: BLOCKED
     evidence: null
 gate_rule:
-  expression: "gate_passed == true only when every required item status == PASS"
+  expression: "gate_passed == true only when every required item status == VERIFIED"
   current_evaluation: false
-  next_action: "Supply approved sanitized copy, Access 2016 workstation, external backup/evidence locations, approvals, operator, and reviewer; then execute A through L."
+  next_action: "Use an isolated byte-for-byte copy on an Access 2016 workstation; execute remaining controls, preserve external evidence, verify hashes, and obtain owner/reviewer sign-off."
 ```
 
 ## Update rules
 
-1. Do not delete checklist items. Change `BLOCKED` only after attaching evidence.
-2. Use `FAIL` for an executed control whose acceptance condition was not met;
-   use `BLOCKED` when a prerequisite prevents execution.
-3. `NOT_APPLICABLE` is permitted only with reviewer-approved rationale and cannot
-   be used for an item marked `required: true` unless this checklist is revised
-   and approved.
-4. Set `gate_passed: true` and `overall_status: PASS` only when every required
-   item is `PASS`, the external manifest verifies, and both sign-offs exist.
+1. Do not delete checklist items. Change `BLOCKED` or `NEEDS_ACCESS_2016_VERIFICATION` only after attaching verified evidence.
+2. Use `BLOCKED` when a prerequisite prevents execution; use `NOT_PRESENT` only when absence was directly verified; use `NEEDS_ACCESS_2016_VERIFICATION` when this environment cannot establish the Access result.
+3. `NOT_PRESENT` is an evidence result, not a waiver of a required control.
+4. Set `gate_passed: true` and `overall_status: VERIFIED` only when every required
+   item is `VERIFIED`, the external manifest verifies, and both sign-offs exist.
 5. Store sensitive artifacts outside Git. Commit only privacy-safe summaries,
    hashes, evidence identifiers, and the signed disposition.
