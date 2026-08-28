@@ -1,0 +1,63 @@
+name: Analyze BimYar Working ACCDB
+
+on:
+  push:
+    paths:
+      - 'Database/Access/Working/*.accdb'
+      - '.github/workflows/analyze-access-working.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Access analysis tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mdbtools file
+
+      - name: Analyze Working ACCDB
+        shell: bash
+        run: |
+          set -euo pipefail
+          DB='Database/Access/Working/BimYarCRM_v0.1.accdb'
+          OUT='BimYar_Working_ACCDB_Analysis.txt'
+
+          {
+            echo 'BimYar Working ACCDB analysis'
+            echo '================================'
+            echo "UTC timestamp: $(date -u '+%Y-%m-%d %H:%M:%S')"
+            echo "Path: $DB"
+            echo
+            echo '--- FILE INFO ---'
+            ls -l "$DB"
+            file "$DB" || true
+            sha256sum "$DB"
+            echo
+            echo '--- MDBTOOLS VERSION ---'
+            mdb-ver "$DB" || true
+            echo
+            echo '--- USER TABLES ---'
+            mdb-tables -1 "$DB" || true
+            echo
+            echo '--- SCHEMA (ACCESS DIALECT) ---'
+            mdb-schema "$DB" access || true
+            echo
+            echo '--- SCHEMA (POSTGRES DIALECT, FALLBACK) ---'
+            mdb-schema "$DB" postgres || true
+          } > "$OUT" 2>&1
+
+          cat "$OUT"
+
+      - name: Upload analysis report
+        uses: actions/upload-artifact@v4
+        with:
+          name: BimYar-Working-ACCDB-Analysis
+          path: BimYar_Working_ACCDB_Analysis.txt
+          if-no-files-found: error
