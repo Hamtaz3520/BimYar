@@ -1,0 +1,4 @@
+﻿REFERENCE|Name=VBA|FullPath=C:\PROGRA~1\COMMON~1\MICROS~1\VBA\VBA7.1\VBE7.DLL|GUID={000204EF-0000-0000-C000-000000000046}|Major=4|Minor=2|IsBroken=False
+REFERENCE|Name=Access|FullPath=C:\Program Files\Microsoft Office\Office16\MSACC.OLB|GUID={4AFFC9A0-5F99-101B-AF4E-00AA003F0F07}|Major=9|Minor=0|IsBroken=False
+REFERENCE|Name=stdole|FullPath=C:\Windows\system32\stdole2.tlb|GUID={00020430-0000-0000-C000-000000000046}|Major=2|Minor=0|IsBroken=False
+REFERENCE|Name=DAO|FullPath=C:\Program Files\Common Files\Microsoft Shared\OFFICE16\ACEDAO.DLL|GUID={4AC9E1DA-5BAD-4AC7-86E3-24F4CDCECA28}|Major=12|Minor=0|IsBroken=False

@@ -1,0 +1,60 @@
+Option Compare Database
+Option Explicit
+
+'=========================================
+'  Ê«»⁄ ⁄„Ê„Ì »Ì„Ì«—
+'=========================================
+
+Public Function NzText(ByVal v As Variant) As String
+
+    If IsNull(v) Then
+        NzText = ""
+    Else
+        NzText = Trim(CStr(v))
+    End If
+
+End Function
+
+'=====================================================
+' BimYar CRM
+'  Ê«»⁄ ⁄„Ê„Ì Å—ÊéÂ
+'=====================================================
+
+Public Sub SetFieldCaption(tableName As String, _
+                           fieldName As String, _
+                           CaptionText As String)
+
+    On Error GoTo ErrHandler
+
+    Dim db As DAO.Database
+    Dim tdf As DAO.TableDef
+    Dim fld As DAO.Field
+    Dim prp As DAO.Property
+
+    Set db = CurrentDb
+    Set tdf = db.TableDefs(tableName)
+    Set fld = tdf.fields(fieldName)
+
+    On Error Resume Next
+    fld.Properties("Caption") = CaptionText
+
+    If Err.Number <> 0 Then
+        Err.Clear
+        Set prp = fld.CreateProperty("Caption", dbText, CaptionText)
+        fld.Properties.Append prp
+    End If
+
+    On Error GoTo 0
+
+ExitHere:
+    Set prp = Nothing
+    Set fld = Nothing
+    Set tdf = Nothing
+    Set db = Nothing
+    Exit Sub
+
+ErrHandler:
+    MsgBox Err.Number & " - " & Err.Description, vbCritical, "BimYar"
+    Resume ExitHere
+
+End Sub

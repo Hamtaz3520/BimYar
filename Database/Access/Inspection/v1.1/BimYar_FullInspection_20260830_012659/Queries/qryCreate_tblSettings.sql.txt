@@ -1,0 +1,17 @@
+﻿
+
+CREATE TABLE tblSettings
+(
+    SettingID AUTOINCREMENT
+        CONSTRAINT PK_tblSettings PRIMARY KEY,
+
+    SettingKey TEXT(50) NOT NULL,
+
+    SettingValue LONGTEXT,
+
+    Description LONGTEXT,
+
+    IsSystem YESNO,
+
+    ModifiedDate DATETIME
+);

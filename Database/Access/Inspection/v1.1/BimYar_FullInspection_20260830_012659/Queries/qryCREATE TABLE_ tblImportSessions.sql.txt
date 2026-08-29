@@ -1,0 +1,38 @@
+﻿CREATE TABLE tblImportSessions (
+
+    ImportSessionID AUTOINCREMENT
+        CONSTRAINT PK_tblImportSessions PRIMARY KEY,
+
+    ReportYear INTEGER,
+
+    ReportMonth BYTE,
+
+    ReportType BYTE,
+
+    MarketerID LONG,
+
+    ImportFileName TEXT(255),
+
+    ImportFilePath TEXT(255),
+
+    ImportDate DATETIME,
+
+    ImportUserID LONG,
+
+    TotalRows LONG,
+
+    PolicyRows LONG,
+
+    InstallmentRows LONG,
+
+    MatchedRows LONG,
+
+    UnmatchedRows LONG,
+
+    ErrorRows LONG,
+
+    SessionStatus TEXT(30),
+
+    Notes LONGTEXT
+
+);

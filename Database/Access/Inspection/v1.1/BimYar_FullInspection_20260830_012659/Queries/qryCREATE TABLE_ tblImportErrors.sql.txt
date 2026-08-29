@@ -1,0 +1,30 @@
+﻿CREATE TABLE tblImportErrors (
+
+    ImportErrorID AUTOINCREMENT
+        CONSTRAINT PK_tblImportErrors PRIMARY KEY,
+
+    ImportSessionID LONG,
+
+    SourceImportPolicyID LONG,
+
+    WorkID LONG,
+
+    ErrorType TEXT(50),
+
+    ErrorCode TEXT(30),
+
+    ErrorMessage LONGTEXT,
+
+    PolicyNumber TEXT(50),
+
+    RowNo LONG,
+
+    IsResolved YESNO,
+
+    ResolvedByUserID LONG,
+
+    ResolvedDate DATETIME,
+
+    ResolutionNote LONGTEXT
+
+);

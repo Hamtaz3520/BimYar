@@ -1,0 +1,72 @@
+Option Compare Database
+Option Explicit
+
+Public Sub CheckImportFieldSizes()
+
+    Dim db As DAO.Database
+    Dim tdf As DAO.TableDef
+    Dim fld As DAO.Field
+    Dim tableName As Variant
+
+    Set db = CurrentDb
+
+    Debug.Print String(70, "=")
+    Debug.Print "BimYar Import Field Size Diagnostic"
+    Debug.Print "Date: " & Now()
+    Debug.Print String(70, "=")
+
+    For Each tableName In Array("tblImportPolicies", "tblImportPolicies_Work")
+
+        Debug.Print
+        Debug.Print "TABLE: " & tableName
+        Debug.Print String(70, "-")
+
+        On Error Resume Next
+        Set tdf = db.TableDefs(CStr(tableName))
+
+        If Err.Number <> 0 Then
+            Debug.Print "ERROR: Table not found"
+            Err.Clear
+            On Error GoTo 0
+        Else
+
+            On Error GoTo 0
+
+            For Each fld In tdf.fields
+
+                Select Case fld.Type
+
+                    Case dbText
+                        Debug.Print _
+                            "Field: " & fld.Name & _
+                            " | Type: Short Text" & _
+                            " | Size: " & fld.Size
+
+                    Case dbMemo
+                        Debug.Print _
+                            "Field: " & fld.Name & _
+                            " | Type: Long Text"
+
+                    Case Else
+                        ' Ignore numeric/date fields for error 3163 diagnosis
+
+                End Select
+
+            Next fld
+
+        End If
+
+        Set tdf = Nothing
+
+    Next tableName
+
+    Debug.Print
+    Debug.Print String(70, "=")
+    Debug.Print "Diagnostic completed."
+    Debug.Print String(70, "=")
+
+    MsgBox "»——”Ì «‰œ«“Â ›Ì·œÂ« «‰Ã«„ ‘œ." & vbCrLf & _
+           "‰ ÌÃÂ —« œ— Immediate Window »»Ì‰Ìœ.", _
+           vbInformation, "BimYar"
+
+End Sub

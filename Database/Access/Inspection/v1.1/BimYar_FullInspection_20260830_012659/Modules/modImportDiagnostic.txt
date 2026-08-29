@@ -1,0 +1,31 @@
+Option Compare Database
+Option Explicit
+
+Public Sub TestImportFieldSizes()
+
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+    Dim fld As DAO.Field
+
+    Set db = CurrentDb
+    Set rs = db.OpenRecordset("tblImportSessions", dbOpenSnapshot)
+
+    Debug.Print "===== tblImportPolicies Field Sizes ====="
+
+    For Each fld In rs.fields
+
+        If fld.Type = dbText Then
+            Debug.Print fld.Name & " -> " & fld.Size
+        Else
+            Debug.Print fld.Name & " -> Type=" & fld.Type
+        End If
+
+    Next fld
+
+    rs.Close
+    Set rs = Nothing
+    Set db = Nothing
+
+    MsgBox "·Ì”  «‰œ«“Â ›Ì·œÂ« œ— Immediate Window ç«Å ‘œ.", vbInformation
+
+End Sub

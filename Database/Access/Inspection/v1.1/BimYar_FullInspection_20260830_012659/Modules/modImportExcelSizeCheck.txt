@@ -1,0 +1,251 @@
+Option Compare Database
+Option Explicit
+
+' Reconstructed safe version for BimYar.
+' Purpose: compare maximum Excel text lengths with tblImportPolicies_Work field sizes.
+' Read-only: this module does not alter tables or data.
+
+Public Sub CheckExcelAgainstImportWork()
+
+    Const msoFileDialogFilePicker As Long = 3
+    Const xlUp As Long = -4162
+    Const xlToLeft As Long = -4159
+
+    Dim fd As Object
+    Dim filePath As String
+
+    Dim xlApp As Object
+    Dim xlWb As Object
+    Dim xlWs As Object
+
+    Dim db As DAO.Database
+    Dim tdf As DAO.TableDef
+    Dim fld As DAO.Field
+
+    Dim lastRow As Long
+    Dim lastCol As Long
+
+    Dim col As Long
+    Dim row As Long
+
+    Dim headerName As String
+    Dim cellValue As String
+    Dim fieldName As String
+
+    Dim maxLen As Long
+    Dim maxRow As Long
+
+    Dim tableFieldSize As Long
+    Dim fieldFound As Boolean
+    Dim statusText As String
+
+    On Error GoTo ErrHandler
+
+    Set fd = Application.FileDialog(msoFileDialogFilePicker)
+
+    With fd
+        .Title = "Select BimYar issuance Excel file"
+        .AllowMultiSelect = False
+        .Filters.Clear
+        .Filters.Add "Excel Files", "*.xlsx;*.xls"
+
+        If .Show <> -1 Then
+            MsgBox "No file selected.", vbInformation, "BimYar"
+            GoTo CleanExit
+        End If
+
+        filePath = .SelectedItems(1)
+    End With
+
+    Set xlApp = CreateObject("Excel.Application")
+    xlApp.DisplayAlerts = False
+
+    Set xlWb = xlApp.Workbooks.Open(filePath, False, True)
+    Set xlWs = xlWb.Worksheets(1)
+
+    lastRow = xlWs.Cells(xlWs.Rows.Count, 1).End(xlUp).row
+    lastCol = xlWs.Cells(1, xlWs.Columns.Count).End(xlToLeft).Column
+
+    Set db = CurrentDb
+    Set tdf = db.TableDefs("tblImportPolicies_Work")
+
+    Debug.Print String(120, "=")
+    Debug.Print "BimYar Excel vs tblImportPolicies_Work"
+    Debug.Print "File: " & filePath
+    Debug.Print "Rows: " & lastRow
+    Debug.Print "Columns: " & lastCol
+    Debug.Print String(120, "=")
+    Debug.Print "Col" & vbTab & "Header" & vbTab & "Field" & vbTab & _
+                "FieldSize" & vbTab & "MaxExcelLen" & vbTab & _
+                "MaxRow" & vbTab & "Status"
+
+    For col = 1 To lastCol
+
+        headerName = Trim$(Nz(xlWs.Cells(1, col).value, vbNullString))
+        fieldName = GetImportFieldNameByColumn(col)
+
+        If Len(fieldName) > 0 Then
+
+            maxLen = 0
+            maxRow = 0
+
+            For row = 2 To lastRow
+
+                If IsError(xlWs.Cells(row, col).value) Then
+                    cellValue = vbNullString
+                ElseIf IsNull(xlWs.Cells(row, col).value) Or _
+                       IsEmpty(xlWs.Cells(row, col).value) Then
+                    cellValue = vbNullString
+                Else
+                    cellValue = CStr(xlWs.Cells(row, col).value)
+                End If
+
+                If Len(cellValue) > maxLen Then
+                    maxLen = Len(cellValue)
+                    maxRow = row
+                End If
+
+            Next row
+
+            fieldFound = False
+            tableFieldSize = 0
+
+            On Error Resume Next
+            Set fld = tdf.fields(fieldName)
+            fieldFound = (Err.Number = 0)
+            Err.Clear
+            On Error GoTo ErrHandler
+
+            If fieldFound Then
+
+                If fld.Type = dbMemo Then
+                    tableFieldSize = 0
+                    statusText = "OK - LONG TEXT"
+                Else
+                    tableFieldSize = fld.Size
+
+                    If maxLen > tableFieldSize Then
+                        statusText = ">>> TOO SMALL <<<"
+                    Else
+                        statusText = "OK"
+                    End If
+                End If
+
+            Else
+                statusText = "FIELD NOT FOUND"
+            End If
+
+            Debug.Print col & vbTab & _
+                        headerName & vbTab & _
+                        fieldName & vbTab & _
+                        IIf(fieldFound And fld.Type <> dbMemo, _
+                            CStr(tableFieldSize), _
+                            IIf(fieldFound, "Long Text", "-")) & vbTab & _
+                        maxLen & vbTab & _
+                        maxRow & vbTab & _
+                        statusText
+
+            Set fld = Nothing
+
+        End If
+
+    Next col
+
+    Debug.Print String(120, "=")
+    Debug.Print "Check completed. Search for: TOO SMALL"
+    Debug.Print String(120, "=")
+
+CleanExit:
+    On Error Resume Next
+
+    If Not xlWb Is Nothing Then xlWb.Close False
+    If Not xlApp Is Nothing Then xlApp.Quit
+
+    Set fld = Nothing
+    Set tdf = Nothing
+    Set db = Nothing
+    Set xlWs = Nothing
+    Set xlWb = Nothing
+    Set xlApp = Nothing
+    Set fd = Nothing
+
+    Exit Sub
+
+ErrHandler:
+    MsgBox "CheckExcelAgainstImportWork error:" & vbCrLf & _
+           Err.Number & " - " & Err.Description, _
+           vbCritical, "BimYar"
+
+    Resume CleanExit
+
+End Sub
+
+
+Private Function GetImportFieldNameByColumn( _
+    ByVal columnNumber As Long) As String
+
+    Select Case columnNumber
+
+        Case 2
+            GetImportFieldNameByColumn = "PolicyNumber"
+
+        Case 3
+            GetImportFieldNameByColumn = "InsuredName"
+
+        Case 4
+            GetImportFieldNameByColumn = "PreviousInsurer"
+
+        Case 5
+            GetImportFieldNameByColumn = "PreviousPolicyNumber"
+
+        Case 6
+            GetImportFieldNameByColumn = "VehicleType"
+
+        Case 7
+            GetImportFieldNameByColumn = "SystemType"
+
+        Case 8
+            GetImportFieldNameByColumn = "VehicleModel"
+
+        Case 9
+            GetImportFieldNameByColumn = "InsuredType"
+
+        Case 10
+            GetImportFieldNameByColumn = "NationalCode"
+
+        Case 11
+            GetImportFieldNameByColumn = "Phone"
+
+        Case 12
+            GetImportFieldNameByColumn = "Mobile"
+
+        Case 13
+            GetImportFieldNameByColumn = "Address"
+
+        Case 14
+            GetImportFieldNameByColumn = "StartDate"
+
+        Case 15
+            GetImportFieldNameByColumn = "EndDate"
+
+        Case 16
+            GetImportFieldNameByColumn = "IssueDate"
+
+        Case 18
+            GetImportFieldNameByColumn = "Profile"
+
+        Case 19
+            GetImportFieldNameByColumn = "PaymentType"
+
+        Case 21
+            GetImportFieldNameByColumn = "PaymentRefNo"
+
+        Case 22
+            GetImportFieldNameByColumn = "PaymentDate"
+
+        Case Else
+            GetImportFieldNameByColumn = vbNullString
+
+    End Select
+
+End Function

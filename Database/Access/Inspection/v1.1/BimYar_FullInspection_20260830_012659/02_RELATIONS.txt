@@ -1,0 +1,2 @@
+﻿RELATION|MSysNavPaneGroupCategoriesMSysNavPaneGroups|Parent=MSysNavPaneGroupCategories|Child=MSysNavPaneGroups|Fields=Id->GroupCategoryID|Attributes=4352
+RELATION|MSysNavPaneGroupsMSysNavPaneGroupToObjects|Parent=MSysNavPaneGroups|Child=MSysNavPaneGroupToObjects|Fields=Id->GroupID|Attributes=4352

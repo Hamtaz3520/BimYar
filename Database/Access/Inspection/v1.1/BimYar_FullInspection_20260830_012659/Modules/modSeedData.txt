@@ -1,0 +1,38 @@
+Option Compare Database
+Option Explicit
+
+Public Sub Seed_RenewalStatuses()
+
+    Dim db As DAO.Database
+    Set db = CurrentDb
+
+    'Ç˜ ˜ÑÏä ÇØáÇÚÇÊ ŞÈáí ÏÑ ÕæÑÊ æÌæÏ
+    db.Execute "DELETE FROM tblRenewalStatuses", dbFailOnError
+
+    'ËÈÊ æÖÚíÊåÇí ÊãÏíÏ
+    db.Execute "INSERT INTO tblRenewalStatuses (StatusCode, StatusTitle, IsActive, SortOrder, CreatedDate) " & _
+               "VALUES ('Pending','ÏÑ ÇäÊÙÇÑ ííÑí',True,1,Now())"
+
+    db.Execute "INSERT INTO tblRenewalStatuses (StatusCode, StatusTitle, IsActive, SortOrder, CreatedDate) " & _
+               "VALUES ('Contacted','ÊãÇÓ ÑİÊå ÔÏå',True,2,Now())"
+
+    db.Execute "INSERT INTO tblRenewalStatuses (StatusCode, StatusTitle, IsActive, SortOrder, CreatedDate) " & _
+               "VALUES ('Interested','ÊãÇíá Èå ÊãÏíÏ',True,3,Now())"
+
+    db.Execute "INSERT INTO tblRenewalStatuses (StatusCode, StatusTitle, IsActive, SortOrder, CreatedDate) " & _
+               "VALUES ('Renewed','ÊãÏíÏ ÔÏå',True,4,Now())"
+
+    db.Execute "INSERT INTO tblRenewalStatuses (StatusCode, StatusTitle, IsActive, SortOrder, CreatedDate) " & _
+               "VALUES ('Declined','ÚÏã ÊãÏíÏ',True,5,Now())"
+
+    db.Execute "INSERT INTO tblRenewalStatuses (StatusCode, StatusTitle, IsActive, SortOrder, CreatedDate) " & _
+               "VALUES ('NoAnswer','ÇÓÎæ äíÓÊ',True,6,Now())"
+
+    db.Execute "INSERT INTO tblRenewalStatuses (StatusCode, StatusTitle, IsActive, SortOrder, CreatedDate) " & _
+               "VALUES ('Expired','ãäŞÖí ÔÏå',True,7,Now())"
+
+    MsgBox "æÖÚíÊåÇí ÊãÏíÏ ÈÇ ãæİŞíÊ ÇíÌÇÏ ÔÏ", vbInformation
+
+    Set db = Nothing
+
+End Sub

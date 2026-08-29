@@ -1,0 +1,456 @@
+Option Compare Database
+Option Explicit
+
+'==========================================================
+' BimYar - Import Engine
+'==========================================================
+
+Public Sub ImportPolicyReport()
+
+    Dim db As DAO.Database
+    Dim rsImport As DAO.Recordset
+    Dim rsSession As DAO.Recordset
+
+    Dim xlApp As Object
+    Dim xlBook As Object
+    Dim xlSheet As Object
+    Dim fd As Object
+
+    Dim filePath As String
+    Dim fileName As String
+
+    Dim reportType As Integer
+    Dim reportYear As Integer
+    Dim reportMonth As Integer
+
+    Dim marketerID As Variant
+    Dim sessionID As Long
+
+    Dim lastRow As Long
+    Dim r As Long
+
+    Dim totalRows As Long
+    Dim policyRows As Long
+    Dim installmentRows As Long
+
+    Dim errNo As Long
+    Dim errText As String
+
+    On Error GoTo Err_Handler
+
+    '--------------------------------------------
+    ' ‰Ê⁄ ê“«—‘
+    '--------------------------------------------
+    reportType = Val(InputBox( _
+        "‰Ê⁄ ê“«—‘ —« Ê«—œ ò‰Ìœ:" & vbCrLf & _
+        "1 = ê“«—‘ ò·Ì" & vbCrLf & _
+        "2 = ê“«—‘ »«“«—Ì«»", _
+        "‰Ê⁄ ê“«—‘"))
+
+    If reportType <> 1 And reportType <> 2 Then
+        MsgBox "‰Ê⁄ ê“«—‘ ’ÕÌÕ ‰Ì” .", vbExclamation
+        Exit Sub
+    End If
+
+    '--------------------------------------------
+    ' ”«· ê“«—‘
+    '--------------------------------------------
+    reportYear = Val(InputBox( _
+        "”«· ê“«—‘ —« Ê«—œ ò‰Ìœ." & vbCrLf & _
+        "„À«·: 1405", _
+        "”«· ê“«—‘"))
+
+    If reportYear = 0 Then
+        Exit Sub
+    End If
+
+    '--------------------------------------------
+    ' „«Â ê“«—‘
+    '--------------------------------------------
+    reportMonth = Val(InputBox( _
+        "‘„«—Â „«Â —« Ê«—œ ò‰Ìœ." & vbCrLf & _
+        "„À«·:  Ì— = 4", _
+        "„«Â ê“«—‘"))
+
+    If reportMonth < 1 Or reportMonth > 12 Then
+        MsgBox "„«Â Ê«—œ ‘œÂ ’ÕÌÕ ‰Ì” .", vbExclamation
+        Exit Sub
+    End If
+    '--------------------------------------------
+    ' »«“«—Ì«»
+    '--------------------------------------------
+    If reportType = 2 Then
+
+        marketerID = Val(InputBox( _
+            "‘‰«”Â »«“«—Ì«» (MarketerID) —« Ê«—œ ò‰Ìœ.", _
+            "«‰ Œ«» »«“«—Ì«»"))
+
+        If marketerID = 0 Then
+            MsgBox "»—«Ì ê“«—‘ »«“«—Ì«» »«Ìœ »«“«—Ì«» „‘Œ’ ‘Êœ.", _
+                   vbExclamation
+            Exit Sub
+        End If
+
+    Else
+        marketerID = Null
+    End If
+
+    '--------------------------------------------
+    ' «‰ Œ«» ›«Ì· Excel
+    '--------------------------------------------
+    Set fd = Application.FileDialog(3)
+
+    With fd
+        .Title = "«‰ Œ«» ›«Ì· ê“«—‘ ’œÊ— »Ì„Â"
+        .Filters.Clear
+        .Filters.Add "Excel Files", "*.xlsx;*.xls"
+        .AllowMultiSelect = False
+
+        If .Show <> -1 Then
+            Exit Sub
+        End If
+
+        filePath = .SelectedItems(1)
+    End With
+
+    '--------------------------------------------
+    ' Diagnostic: verify selected Excel path
+    '--------------------------------------------
+    MsgBox "Selected file:" & vbCrLf & filePath, _
+           vbInformation, "BimYar - File Path Check"
+
+    If Len(Dir$(filePath)) = 0 Then
+        MsgBox "PATH NOT FOUND:" & vbCrLf & filePath, _
+               vbCritical, "BimYar - File Path Check"
+        Exit Sub
+    End If
+
+    fileName = Mid$(filePath, InStrRev(filePath, "\") + 1)
+
+    Set db = CurrentDb
+
+    '--------------------------------------------
+    ' «ÌÃ«œ Session
+    '--------------------------------------------
+    Set rsSession = db.OpenRecordset( _
+        "tblImportSessions", dbOpenDynaset)
+
+    rsSession.AddNew
+
+    rsSession!reportYear = reportYear
+    rsSession!reportMonth = reportMonth
+    rsSession!reportType = reportType
+
+    If reportType = 2 Then
+        rsSession!marketerID = marketerID
+    Else
+        rsSession!marketerID = Null
+    End If
+
+    rsSession!ImportFileName = fileName
+    rsSession!ImportFilePath = filePath
+    rsSession!ImportDate = Now()
+    rsSession!SessionStatus = "Importing"
+
+    rsSession.Update
+    rsSession.Bookmark = rsSession.LastModified
+
+    sessionID = rsSession!ImportSessionID
+
+    rsSession.Close
+    Set rsSession = Nothing
+
+    '--------------------------------------------
+    ' »«“ ò—œ‰ Excel
+    '--------------------------------------------
+    Set xlApp = CreateObject("Excel.Application")
+    xlApp.Visible = False
+
+    Set xlBook = xlApp.Workbooks.Open(filePath)
+    Set xlSheet = xlBook.Worksheets(1)
+
+    lastRow = xlSheet.UsedRange.row + _
+              xlSheet.UsedRange.Rows.Count - 1
+
+    Set rsImport = db.OpenRecordset( _
+        "tblImportPolicies", dbOpenDynaset)
+        '--------------------------------------------
+    ' ŒÊ«‰œ‰ —œÌ› Â«Ì Excel
+    '--------------------------------------------
+    For r = 1 To lastRow
+
+        If IsHeaderRow(xlSheet, r) Then
+            GoTo NextRow
+        End If
+
+        If IsEmptyReportRow(xlSheet, r) Then
+            GoTo NextRow
+        End If
+
+        rsImport.AddNew
+
+        rsImport!ImportSessionID = sessionID
+        rsImport!reportType = reportType
+
+        If reportType = 2 Then
+            rsImport!marketerID = marketerID
+        Else
+            rsImport!marketerID = Null
+        End If
+
+        rsImport!ImportFileName = fileName
+        rsImport!ImportDate = Now()
+
+        SetLongField rsImport, "RowNo", _
+            xlSheet.Cells(r, 1).Value2
+
+        SetTextField rsImport, "PolicyNumber", _
+            GetCellText(xlSheet, r, 2)
+
+        SetTextField rsImport, "InsuredName", _
+            GetCellText(xlSheet, r, 3)
+
+        SetTextField rsImport, "PreviousInsurer", _
+            GetCellText(xlSheet, r, 4)
+
+        SetTextField rsImport, "PreviousPolicyNumber", _
+            GetCellText(xlSheet, r, 5)
+
+        SetTextField rsImport, "VehicleType", _
+            GetCellText(xlSheet, r, 6)
+
+        SetTextField rsImport, "SystemType", _
+            GetCellText(xlSheet, r, 7)
+
+        SetTextField rsImport, "VehicleModel", _
+            GetCellText(xlSheet, r, 8)
+
+        SetTextField rsImport, "InsuredType", _
+            GetCellText(xlSheet, r, 9)
+
+        SetTextField rsImport, "NationalCode", _
+            GetCellText(xlSheet, r, 10)
+
+        SetTextField rsImport, "Phone", _
+            GetCellText(xlSheet, r, 11)
+
+        SetTextField rsImport, "Mobile", _
+            GetCellText(xlSheet, r, 12)
+
+        SetTextField rsImport, "Address", _
+            GetCellText(xlSheet, r, 13)
+            SetTextField rsImport, "StartDate", _
+            GetCellText(xlSheet, r, 14)
+
+        SetTextField rsImport, "EndDate", _
+            GetCellText(xlSheet, r, 15)
+
+        SetTextField rsImport, "IssueDate", _
+            GetCellText(xlSheet, r, 16)
+
+        SetCurrencyField rsImport, "PremiumAmount", _
+            xlSheet.Cells(r, 17).Value2
+
+        SetTextField rsImport, "Profile", _
+            GetCellText(xlSheet, r, 18)
+
+        SetTextField rsImport, "PaymentType", _
+            GetCellText(xlSheet, r, 19)
+
+        SetCurrencyField rsImport, "PaymentAmount", _
+            xlSheet.Cells(r, 20).Value2
+
+        SetTextField rsImport, "PaymentRefNo", _
+            GetCellText(xlSheet, r, 21)
+
+        SetTextField rsImport, "PaymentDate", _
+            GetCellText(xlSheet, r, 22)
+
+        rsImport!IsImported = True
+        rsImport.Update
+
+        totalRows = totalRows + 1
+
+        If Trim$(GetCellText(xlSheet, r, 2)) <> "" Then
+
+            policyRows = policyRows + 1
+
+        ElseIf Trim$(GetCellText(xlSheet, r, 19)) = "ﬁ”ÿ" Then
+
+            installmentRows = installmentRows + 1
+
+        End If
+
+NextRow:
+
+    Next r
+
+    rsImport.Close
+    Set rsImport = Nothing
+
+    xlBook.Close False
+    xlApp.Quit
+
+    Set xlSheet = Nothing
+    Set xlBook = Nothing
+    Set xlApp = Nothing
+
+    db.Execute _
+        "UPDATE tblImportSessions SET " & _
+        "TotalRows=" & totalRows & ", " & _
+        "PolicyRows=" & policyRows & ", " & _
+        "InstallmentRows=" & installmentRows & ", " & _
+        "SessionStatus='RawImported' " & _
+        "WHERE ImportSessionID=" & sessionID, _
+        dbFailOnError
+
+    MsgBox _
+        "Ê—Êœ ›«Ì· »« „Ê›ﬁÌ  «‰Ã«„ ‘œ." & vbCrLf & _
+        " ⁄œ«œ —œÌ› Â«: " & totalRows & vbCrLf & _
+        "»Ì„Â ‰«„Â Â«: " & policyRows & vbCrLf & _
+        "«ﬁ”«ÿ: " & installmentRows, _
+        vbInformation
+
+    Set db = Nothing
+    Exit Sub
+
+Err_Handler:
+
+    errNo = Err.Number
+    errText = Err.Description
+
+    On Error Resume Next
+
+    If Not rsImport Is Nothing Then
+        rsImport.Close
+    End If
+
+    If Not rsSession Is Nothing Then
+        rsSession.Close
+    End If
+
+    If Not xlBook Is Nothing Then
+        xlBook.Close False
+    End If
+
+    If Not xlApp Is Nothing Then
+        xlApp.Quit
+    End If
+
+    Set rsImport = Nothing
+    Set rsSession = Nothing
+    Set xlSheet = Nothing
+    Set xlBook = Nothing
+    Set xlApp = Nothing
+    Set db = Nothing
+
+    On Error GoTo 0
+
+    MsgBox "Œÿ« œ— Import:" & vbCrLf & _
+           errNo & " - " & errText, vbCritical
+
+End Sub
+
+    Private Function IsHeaderRow( _
+    ByVal ws As Object, _
+    ByVal rowNumber As Long) As Boolean
+
+    Dim col1 As String
+    Dim col2 As String
+
+    col1 = Trim$(GetCellText(ws, rowNumber, 1))
+    col2 = Trim$(GetCellText(ws, rowNumber, 2))
+
+    IsHeaderRow = _
+        (col1 = "—œÌ›" And _
+        InStr(1, col2, "‘„«—Â »Ì„Â", vbTextCompare) > 0)
+
+End Function
+
+
+Private Function IsEmptyReportRow( _
+    ByVal ws As Object, _
+    ByVal rowNumber As Long) As Boolean
+
+    Dim i As Integer
+
+    For i = 1 To 22
+
+        If Trim$(GetCellText(ws, rowNumber, i)) <> "" Then
+            IsEmptyReportRow = False
+            Exit Function
+        End If
+
+    Next i
+
+    IsEmptyReportRow = True
+
+End Function
+
+
+Private Function GetCellText( _
+    ByVal ws As Object, _
+    ByVal rowNumber As Long, _
+    ByVal columnNumber As Long) As String
+
+    Dim v As Variant
+
+    v = ws.Cells(rowNumber, columnNumber).Value2
+
+    If IsError(v) Or IsNull(v) Or IsEmpty(v) Then
+        GetCellText = ""
+    Else
+        GetCellText = Trim$(CStr(v))
+    End If
+
+End Function
+
+
+Private Sub SetTextField( _
+    ByRef rs As DAO.Recordset, _
+    ByVal fieldName As String, _
+    ByVal fieldValue As Variant)
+
+    If IsNull(fieldValue) Then
+
+        rs.fields(fieldName).value = Null
+
+    ElseIf Trim$(CStr(fieldValue)) = "" Then
+
+        rs.fields(fieldName).value = Null
+
+    Else
+
+        rs.fields(fieldName).value = CStr(fieldValue)
+
+    End If
+
+End Sub
+
+
+Private Sub SetLongField( _
+    ByRef rs As DAO.Recordset, _
+    ByVal fieldName As String, _
+    ByVal fieldValue As Variant)
+
+    If IsNumeric(fieldValue) Then
+        rs.fields(fieldName).value = CLng(fieldValue)
+    Else
+        rs.fields(fieldName).value = Null
+    End If
+
+End Sub
+
+
+Private Sub SetCurrencyField( _
+    ByRef rs As DAO.Recordset, _
+    ByVal fieldName As String, _
+    ByVal fieldValue As Variant)
+
+    If IsNumeric(fieldValue) Then
+        rs.fields(fieldName).value = CCur(fieldValue)
+    Else
+        rs.fields(fieldName).value = Null
+    End If
+
+End Sub

@@ -1,0 +1,32 @@
+Option Compare Database
+Option Explicit
+
+'=====================================================
+' BimYar CRM
+' Table : tblMarketers
+' ÊäÙíã ÎÕæÕíÇÊ İíáÏåÇ (Caption)
+'=====================================================
+
+Public Sub Set_tblMarketers_Properties()
+
+    On Error GoTo ErrHandler
+
+    Call SetFieldCaption("tblMarketers", "MarketerID", "ÔäÇÓå ÈÇÒÇÑíÇÈ")
+    Call SetFieldCaption("tblMarketers", "MarketerCode", "˜Ï ÈÇÒÇÑíÇÈ")
+    Call SetFieldCaption("tblMarketers", "FullName", "äÇã æ äÇã ÎÇäæÇÏí")
+    Call SetFieldCaption("tblMarketers", "Mobile", "Êáİä åãÑÇå")
+    Call SetFieldCaption("tblMarketers", "NationalCode", "˜Ï ãáí")
+    Call SetFieldCaption("tblMarketers", "HireDate", "ÊÇÑíÎ åã˜ÇÑí")
+    Call SetFieldCaption("tblMarketers", "IsActive", "İÚÇá")
+    Call SetFieldCaption("tblMarketers", "Description", "ÊæÖíÍÇÊ")
+    Call SetFieldCaption("tblMarketers", "CreatedDate", "ÊÇÑíÎ ÇíÌÇÏ")
+    Call SetFieldCaption("tblMarketers", "ModifiedDate", "ÊÇÑíÎ ÂÎÑíä æíÑÇíÔ")
+
+    MsgBox "ÎÕæÕíÇÊ ÌÏæá tblMarketers ÈÇ ãæİŞíÊ ÊäÙíã ÔÏ.", vbInformation
+
+    Exit Sub
+
+ErrHandler:
+    MsgBox Err.Number & " - " & Err.Description, vbCritical
+
+End Sub

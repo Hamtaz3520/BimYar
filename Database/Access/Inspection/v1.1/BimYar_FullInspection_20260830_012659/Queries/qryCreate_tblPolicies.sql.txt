@@ -1,0 +1,59 @@
+﻿
+
+CREATE TABLE tblPolicies
+(
+    PolicyID AUTOINCREMENT
+        CONSTRAINT PK_tblPolicies PRIMARY KEY,
+
+    PolicyNumber TEXT(50) NOT NULL,
+
+    UniquePolicyCode TEXT(50),
+
+    CustomerID LONG NOT NULL,
+
+    MarketerID LONG,
+
+    CompanyID LONG NOT NULL,
+
+    BranchID LONG,
+
+    InsuranceTypeID LONG NOT NULL,
+
+    PolicySeries TEXT(20),
+
+    ProposalNumber TEXT(50),
+
+    IssueDate DATETIME,
+
+    StartDate DATETIME NOT NULL,
+
+    EndDate DATETIME NOT NULL,
+
+    PremiumAmount CURRENCY,
+
+    TaxAmount CURRENCY,
+
+    DiscountAmount CURRENCY,
+
+    NetPremium CURRENCY,
+
+    InstallmentCount INTEGER,
+
+    PaymentMethod TEXT(30),
+
+    PolicyStatus TEXT(30),
+
+    SourceFileName TEXT(255),
+
+    SourceRowNumber LONG,
+
+    IsImported YESNO,
+
+    IsActive YESNO,
+
+    Description LONGTEXT,
+
+    CreatedDate DATETIME,
+
+    ModifiedDate DATETIME
+);

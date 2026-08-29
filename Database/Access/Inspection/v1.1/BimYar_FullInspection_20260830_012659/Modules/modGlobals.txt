@@ -1,0 +1,13 @@
+Option Compare Database
+Option Explicit
+
+'=========================================
+' BimYar CRM
+' Version 0.1
+'=========================================
+
+Public Const APP_NAME As String = "BimYar CRM"
+Public Const APP_VERSION As String = "1.0"
+
+Public CurrentUserID As Long
+Public CurrentUserName As String

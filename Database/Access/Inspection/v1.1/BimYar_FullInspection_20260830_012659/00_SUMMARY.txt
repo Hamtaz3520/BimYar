@@ -1,0 +1,11 @@
+﻿BimYar Full Inspection
+======================
+Database=D:\Progect\BimYar\BimYar\BimYar_Project\Database\BimYarCRM_v1.1.accdb
+AccessVersion=16.0
+Timestamp=2026-08-30 01:26:59
+Tables=22
+Queries=23
+Modules=10
+Forms=0
+Reports=0
+Macros=0

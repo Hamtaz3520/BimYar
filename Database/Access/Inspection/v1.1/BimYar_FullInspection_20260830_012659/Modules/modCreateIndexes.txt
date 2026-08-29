@@ -1,0 +1,95 @@
+Option Compare Database
+Option Explicit
+
+Public Sub CreateIndexes()
+
+    On Error Resume Next
+
+    '====================================================
+    ' tblInstallments
+    '====================================================
+
+    CurrentDb.Execute "CREATE INDEX IX_tblInstallments_PolicyID ON tblInstallments (PolicyID)"
+
+    CurrentDb.Execute "CREATE INDEX IX_tblInstallments_DueDate ON tblInstallments (DueDate)"
+
+    CurrentDb.Execute "CREATE INDEX IX_tblInstallments_Status ON tblInstallments (Status)"
+
+    CurrentDb.Execute "CREATE INDEX IX_tblInstallments_PaymentDate ON tblInstallments (PaymentDate)"
+
+    CurrentDb.Execute "CREATE UNIQUE INDEX IX_tblInstallments_PolicyNo ON tblInstallments (PolicyID, InstallmentNo)"
+
+
+    '====================================================
+    ' tblPayments
+    '====================================================
+
+    CurrentDb.Execute "CREATE INDEX IX_tblPayments_PolicyID ON tblPayments (PolicyID)"
+
+    CurrentDb.Execute "CREATE INDEX IX_tblPayments_InstallmentID ON tblPayments (InstallmentID)"
+
+    CurrentDb.Execute "CREATE INDEX IX_tblPayments_PaymentDate ON tblPayments (PaymentDate)"
+
+    CurrentDb.Execute "CREATE INDEX IX_tblPayments_PayerCardNo ON tblPayments (PayerCardNo)"
+
+    CurrentDb.Execute "CREATE INDEX IX_tblPayments_TrackingCode ON tblPayments (TrackingCode)"
+
+    CurrentDb.Execute "CREATE INDEX IX_tblPayments_MatchStatus ON tblPayments (MatchStatus)"
+
+    CurrentDb.Execute "CREATE INDEX IX_tblPayments_BankTransactionID ON tblPayments (BankTransactionID)"
+
+
+    '====================================================
+    ' tblBankTransactions
+    '====================================================
+
+    CurrentDb.Execute "CREATE INDEX IX_tblBankTransactions_BankAccountID ON tblBankTransactions (BankAccountID)"
+
+    CurrentDb.Execute "CREATE INDEX IX_tblBankTransactions_TransactionDate ON tblBankTransactions (TransactionDate)"
+
+    CurrentDb.Execute "CREATE INDEX IX_tblBankTransactions_ReferenceNo ON tblBankTransactions (ReferenceNo)"
+
+    CurrentDb.Execute "CREATE INDEX IX_tblBankTransactions_TrackingCode ON tblBankTransactions (TrackingCode)"
+
+    CurrentDb.Execute "CREATE INDEX IX_tblBankTransactions_PayerCardNo ON tblBankTransactions (PayerCardNo)"
+
+    CurrentDb.Execute "CREATE INDEX IX_tblBankTransactions_IsMatched ON tblBankTransactions (IsMatched)"
+
+    CurrentDb.Execute "CREATE INDEX IX_tblBankTransactions_ImportBatchID ON tblBankTransactions (ImportBatchID)"
+
+
+    '====================================================
+    ' tblFollowUps
+    '====================================================
+
+    CurrentDb.Execute "CREATE INDEX IX_tblFollowUps_CustomerID ON tblFollowUps (CustomerID)"
+
+    CurrentDb.Execute "CREATE INDEX IX_tblFollowUps_PolicyID ON tblFollowUps (PolicyID)"
+
+    CurrentDb.Execute "CREATE INDEX IX_tblFollowUps_InstallmentID ON tblFollowUps (InstallmentID)"
+
+    CurrentDb.Execute "CREATE INDEX IX_tblFollowUps_UserID ON tblFollowUps (UserID)"
+
+    CurrentDb.Execute "CREATE INDEX IX_tblFollowUps_FollowUpDate ON tblFollowUps (FollowUpDate)"
+
+    '====================================================
+    ' tblRenewals
+    '====================================================
+
+    CurrentDb.Execute "CREATE INDEX IX_tblRenewals_PolicyID ON tblRenewals (PolicyID)"
+
+    CurrentDb.Execute "CREATE INDEX IX_tblRenewals_CustomerID ON tblRenewals (CustomerID)"
+
+    CurrentDb.Execute "CREATE INDEX IX_tblRenewals_ExpireDate ON tblRenewals (ExpireDate)"
+
+    CurrentDb.Execute "CREATE INDEX IX_tblRenewals_ReminderDate ON tblRenewals (ReminderDate)"
+
+    CurrentDb.Execute "CREATE INDEX IX_tblRenewals_RenewalStatus ON tblRenewals (RenewalStatus)"
+
+    CurrentDb.Execute "CREATE INDEX IX_tblRenewals_UserID ON tblRenewals (UserID)"
+    
+    On Error GoTo 0
+
+    MsgBox "«Ì‰œò”ùÂ«Ì Ãœ«Ê· »« „Ê›ﬁÌ  «ÌÃ«œ ‘œ‰œ.", vbInformation
+
+End Sub

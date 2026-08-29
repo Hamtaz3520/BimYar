@@ -1,0 +1,22 @@
+﻿CREATE TABLE tblImportLogs (
+
+    ImportLogID AUTOINCREMENT
+        CONSTRAINT PK_tblImportLogs PRIMARY KEY,
+
+    ImportSessionID LONG,
+
+    LogDate DATETIME,
+
+    LogLevel TEXT(20),
+
+    LogSource TEXT(50),
+
+    LogMessage LONGTEXT,
+
+    RelatedTable TEXT(50),
+
+    RelatedRecordID LONG,
+
+    UserID LONG
+
+);
