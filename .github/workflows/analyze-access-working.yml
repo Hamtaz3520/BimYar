@@ -26,7 +26,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          DB='Database/Access/Working/BimYarCRM_v0.1.accdb'
+          DB='Database/Access/Working/BimYarCRM_v1.1.accdb'
           OUT='BimYar_Working_ACCDB_Analysis.txt'
 
           {
