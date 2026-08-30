@@ -1,0 +1,2 @@
+CREATE INDEX IX_tblImportPayments_ImportSessionID
+ON tblImportPayments (ImportSessionID);
